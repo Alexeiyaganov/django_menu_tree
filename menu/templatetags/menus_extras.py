@@ -1,6 +1,6 @@
 from django import template
 from django.shortcuts import get_object_or_404
-from ..models import MenuItem
+from menu.models import MenuItem
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -8,9 +8,11 @@ register = template.Library()
 
 
 
-@register.inclusion_tag('menus/menu_tree.html', takes_context=True)
+@register.inclusion_tag('menu/menu_tree.html', takes_context=True)
 def draw_menu(context, menu_name):
+    print("5555")
     menu = get_object_or_404(MenuItem, name=menu_name, parent=None)
+    print("2222",menu)
     local_context = {'menu_item': menu}
     requested_url = context['request'].path
     try:
@@ -23,7 +25,7 @@ def draw_menu(context, menu_name):
     return local_context
 
 
-@register.inclusion_tag('menus/menu_tree.html', takes_context=True)
+@register.inclusion_tag('menu/menu_tree.html', takes_context=True)
 def draw_menu_item_children(context, menu_item_id):
     menu_item = get_object_or_404(MenuItem, pk=menu_item_id)
     local_context = {'menu_item': menu_item}
